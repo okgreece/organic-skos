@@ -47,6 +47,20 @@
             });
 
     </script>
+    <style>
+        #info{
+            position: fixed;
+            background: white;
+            top: 0;
+            z-index: 1030;
+            width: 100%;
+            padding: 10px;
+        }
+
+        #list{
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
 <div id="info"></div>
