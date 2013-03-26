@@ -14,10 +14,16 @@ if($_GET["action"] ==="load"){
 elseif ($_GET["action"] ==="info"){
     getInfo($_GET["source"],$_GET["id"]);
 }
+
 elseif($_GET["action"] ==="search"){
     search($_GET["search_string"]);
 
+
+elseif ($_GET["action"] ==="clear"){
+    clearCache();
+
 }
+
 
 function autocomplete($source, $word){
 
@@ -60,6 +66,10 @@ function getChildren($source, $uri){
         $output [] = $outputChild;
     }
     echo json_encode($output,JSON_UNESCAPED_UNICODE);
+}
+
+function clearCache(){
+    SKOS_Manager::clearCache();
 }
 
 

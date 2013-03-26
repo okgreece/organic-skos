@@ -16,9 +16,15 @@ class SKOS_Manager
         return $children;
     }
 
+    public static function clearCache(){
+        self::emptyDirectory(sys_get_temp_dir() . '/organic_skos/');
+
+    }
+
     private static function init($source)
     {
-        $temp_file = sys_get_temp_dir() . '/' . md5($source);
+        mkdir(sys_get_temp_dir() . '/organic_skos/');
+        $temp_file = sys_get_temp_dir() . '/organic_skos/' . md5($source);
 
         if (!file_exists($temp_file)) {
             self::$graph->load($source);
@@ -26,6 +32,25 @@ class SKOS_Manager
         } else
             self::$graph = Graphite::thaw($temp_file);
     }
+
+    private static function emptyDirectory($dirname) {
+    if (is_dir($dirname))
+           $dir_handle = opendir($dirname);
+     if (!$dir_handle)
+          return false;
+     while($file = readdir($dir_handle)) {
+           if ($file != "." && $file != "..") {
+                if (!is_dir($dirname."/".$file))
+                     unlink($dirname."/".$file);
+                else
+                     delete_directory($dirname.'/'.$file);
+           }
+     }
+     closedir($dir_handle);
+     
+     return true;
+}
+
 
     public static function hasChildren($resource)
     {
