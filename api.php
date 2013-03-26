@@ -14,6 +14,10 @@ if($_GET["action"] ==="load"){
 elseif ($_GET["action"] ==="info"){
     getInfo($_GET["source"],$_GET["id"]);
 }
+elseif($_GET["action"] ==="search"){
+    search($_GET["search_string"]);
+
+}
 
 function autocomplete($source, $word){
 
@@ -49,7 +53,7 @@ function getChildren($source, $uri){
     $output = array();
     foreach ($children as $child) {
         $hasChildren = SKOS_Manager::hasChildren($child);
-        $outputChild = array("data"=>$child->label(), "attr"=>array("id"=>$child->toString()) );
+        $outputChild = array("data"=>$child->label(), "attr"=>array("id"=>md5($child->toString()), "data-uri"=>$child->toString()) );
         if($hasChildren){
             $outputChild["state"]="closed";
         }
@@ -59,3 +63,6 @@ function getChildren($source, $uri){
 }
 
 
+function search($string){
+    echo json_encode(array(md5("#http://path/to/uri/resources#Ι")));
+}

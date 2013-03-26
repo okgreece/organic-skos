@@ -8,7 +8,9 @@
     <script type="text/javascript" src="scripts/jquery-ui/js/jquery-ui-1.10.1.custom.js"></script>
     <script>
         $(document).ready(function () {
-
+            $("#search").click(function () {
+                $("#list").jstree("search","ΓΕΩΡΓΙΑ");
+            });
                 $("#list").jstree({
 
                     "json_data": {
@@ -17,7 +19,7 @@
 
                             "data": function (n) {
                                 var object = {action: "load", source: "<?php echo $_GET["uri"];?>" };
-                                if (n.attr) object.id = n.attr("id");
+                                if (n.attr) object.id = n.attr("data-uri");
                                 return object;
                             }
                         },
@@ -39,9 +41,18 @@
                             }
                         }
                     },
-                    "plugins": [ "themes", "json_data", "ui", "wholerow", "types" ]
+                    "search" : {
+                        "case_insensitive" : true,
+                        "ajax" : {
+                            "url" : "api.php?action=search"
+                        }
+                    },
+                    "plugins": [ "themes", "json_data", "ui", "wholerow", "types", "search" ]
 
-                });
+                })
+                    .bind("search.jstree", function (e, data) {
+                        alert("Found " + data.rslt.nodes.length + " nodes matching '" + data.rslt.str + "'.");
+                    });
 
 
             });
@@ -49,6 +60,7 @@
     </script>
 </head>
 <body>
+<button id="search">search</button>
 <div id="info"></div>
 <!--div class="ui-widget">
     <label for="search">Search: </label>
