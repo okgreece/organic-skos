@@ -49,7 +49,37 @@ class SKOS_Manager
      closedir($dir_handle);
      
      return true;
-}
+    }
+
+
+    private static function getAncestryPath($resource){
+
+        $parents = $resource->all("skos:broader")->union($resource->all("-skos:narrower"));
+
+        foreach ($parents as $parent) {
+            $parents = $parents->union(self::getAncestryPath($parent));
+        }
+
+        return $parents;
+
+    }
+
+    public static function search($source, $term){
+        self::init($source);
+
+        $concepts = self::$graph->allOfType("skos:Concept");
+        $found = new Graphite_ResourceList(self::$graph);
+
+        foreach ($concepts as $concept) {
+            if(strstr($concept->label(), $term, true)!== FALSE){
+                $found = $found->union($concept)->union(self::getAncestryPath($concept));
+
+            }
+        }
+
+        return $found;
+
+    }
 
 
     public static function hasChildren($resource)
@@ -58,7 +88,7 @@ class SKOS_Manager
     }
 
     public static function getLabels($source){
-        self::ini($source);
+        self::init($source);
         return self::$graph->allOfType("skos:Concept")->label();
     }
 

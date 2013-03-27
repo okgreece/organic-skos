@@ -16,7 +16,8 @@ elseif ($_GET["action"] ==="info"){
 }
 
 elseif($_GET["action"] ==="search"){
-    search($_GET["search_string"]);
+    search($_GET["source"],$_GET["search_string"]);
+}
 
 
 elseif ($_GET["action"] ==="clear"){
@@ -73,6 +74,14 @@ function clearCache(){
 }
 
 
-function search($string){
-    echo json_encode(array(md5("#http://path/to/uri/resources#Ι")));
+function search($source, $string){
+    $found = SKOS_Manager::search($source, $string);
+
+    $ids = array();
+
+    foreach($found as $concept){
+        $ids[] = '#'.md5($concept->toString());
+    }
+
+    echo json_encode($ids);
 }

@@ -9,7 +9,7 @@
     <script>
         $(document).ready(function () {
             $("#search").click(function () {
-                $("#list").jstree("search","ΓΕΩΡΓΙΑ");
+                $("#list").jstree("search",$("#term").val());
             });
                 $("#list").jstree({
 
@@ -31,7 +31,8 @@
                             "default": {
                                 "select_node": function (e) {
                                     this.toggle_node(e);
-                                    $.getJSON('api.php',{action:"info",source:"<?php echo $_GET["uri"];?>","id": e.attr("id")}, function(data) {
+                                    this.select_node(e);
+                                    $.getJSON('api.php',{action:"info",source:"<?php echo $_GET["uri"];?>","id": e.attr("data-uri")}, function(data) {
                                         $("#info").html("uri: "+data.uri);
 
                                     });
@@ -43,15 +44,16 @@
                     },
                     "search" : {
                         "case_insensitive" : true,
+                        "show_only_matches":true,
                         "ajax" : {
-                            "url" : "api.php?action=search"
+                            "url" : "api.php?action=search&source=<?php echo $_GET["uri"];?>"
                         }
                     },
                     "plugins": [ "themes", "json_data", "ui", "wholerow", "types", "search" ]
 
                 })
                     .bind("search.jstree", function (e, data) {
-                        alert("Found " + data.rslt.nodes.length + " nodes matching '" + data.rslt.str + "'.");
+                        //alert("Found " + data.rslt.nodes.length + " nodes matching '" + data.rslt.str + "'.");
                     });
 
 
@@ -68,19 +70,26 @@
             padding: 10px;
         }
 
-        #list{
+        #main{
             margin-top: 50px;
         }
     </style>
 </head>
 <body>
-<button id="search">search</button>
+
 <div id="info"></div>
+<div id="main">
+
+    <button id="search">search</button>
+    <input type="text" id="term"/>
+    <div id="list">
+    </div>
+</div>
+
 <!--div class="ui-widget">
     <label for="search">Search: </label>
     <input id="search" />
 </div-->
-<div id="list">
-</div>
+
 </body>
 </html>
