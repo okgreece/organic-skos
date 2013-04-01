@@ -33,7 +33,7 @@
                                     this.toggle_node(e);
                                     this.select_node(e);
                                     $.getJSON('api.php',{action:"info",source:"<?php echo $_GET["uri"];?>","id": e.attr("data-uri")}, function(data) {
-                                        $("#info").html("uri: "+data.uri);
+                                        $("#info").html("URI: <a href='"+e.attr("data-uri")+"'>"+e.attr("data-uri")+"</a>");
 
                                     });
                                     return false;

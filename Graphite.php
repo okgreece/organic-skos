@@ -461,7 +461,7 @@ rkJggg==
 		$s = $this->expandURI( $s );
 		$p = $this->expandURI( $p );
 		$o = $this->expandURI( $o );
-		if( isset( $o_datatype ) && $o_dataype != "literal" )
+		if( isset( $o_datatype ) && $o_datatype != "literal" )
 		{
 			$o_datatype = $this->expandURI( $o_datatype );
 		}
@@ -690,7 +690,7 @@ rkJggg==
 		return $uri;
 	}
 	
-	public function asString( $uri )
+	public static  function asString( $uri )
 	{
 		if( is_object( $uri ) ) { return $uri->toString(); }
 		return $uri;
