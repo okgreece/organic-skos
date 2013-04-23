@@ -29,8 +29,13 @@ class SKOS_Manager
         if (!file_exists($temp_file)) {
             self::$graph->load($source);
             self::$graph->freeze($temp_file);
-        } else
+        } else{
             self::$graph = Graphite::thaw($temp_file);
+
+            if(count(self::$graph->allSubjects())<1){
+                self::$graph->load($source);
+                self::$graph->freeze($temp_file);}
+            }
     }
 
     private static function emptyDirectory($dirname) {
