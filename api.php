@@ -60,7 +60,7 @@ function getChildren($source, $uri){
     $output = array();
     foreach ($children as $child) {
         $hasChildren = SKOS_Manager::hasChildren($child);
-        $outputChild = array("data"=>$child->label()->toString(), "attr"=>array("id"=>md5($child->toString()), "data-uri"=>$child->toString()) );
+        $outputChild = array("data"=>$child->label(), "attr"=>array("id"=>md5($child->toString()), "data-uri"=>$child->toString()) );
         if($hasChildren){
             $outputChild["state"]="closed";
         }
